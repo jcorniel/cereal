@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <title>Cereal Buttons</title>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container-fluid">
+    <div ="buttons">
+    <button data-cereal="Fruity-Pebbles" class="btn btn-primary">Fruity Pebbles</button>
+    <button data-cereal="Frosted-Flakes" class="btn btn-primary">Frosted Flakes</button>
+    <button data-cereal="corn-pops" class="btn btn-primary">Corn Pops</button>
+    <button data-cereal="Cinnamon-Toast-Crunch" class="btn btn-primary">Cinnamon Toast Crunch</button>
+    <button data-cereal="Cheerios" class="btn btn-primary">Cheerios</button>
+    <button data-cereal="Cap'n-Crunch" class="btn btn-primary">Cap'n Crunch</button>
+    <button data-cereal="Lucky-Charms" class="btn btn-primary">Lucky Charms</button>
+    <div id="gifsAppearHere"></div>
+</div>
+
+<form id="cereals-form">
+<p>
+    <div class=".col-md-offset-8.">
+        <label for="cereals-input">Add Cereals</label>
+            <input type="text" id="cereals-input"><br>
+     <input id="addCereals" type="submit" value="Add Cereals">
+</div>
+</p>  
+  </form>
+    <script src='http://code.jquery.com/jquery-2.1.3.min.js'></script>
+    <script type="text/javascript">
+    $('button').on('click', function() {
+        var cereal = $(this).data('cereal');
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + cereal + "&api_key=dc6zaTOxFJmzC&limit=10";
+        
+        $.ajax({
+                url: queryURL,
+                method: 'GET'
+            })
+            .done(function(response) {
+                
+                console.log(response)
+                var results = response.data;
+                
+for (var i = 0; i < results.length; i++) {
+                  var cerealDiv = $('<div>');
+                   var p = $('<p>').text(results[i].rating);
+                   var img = $('<img>').attr("src", results[i].images.fixed_height.url);
+                   
+                   cerealDiv.append(p);
+                   cerealDiv.append(img);
+                   $('#gifsAppearHere').prepend(cerealDiv);
+                }
+
+            });
+        });      
+    </script>
+</body>
+
+</html>
